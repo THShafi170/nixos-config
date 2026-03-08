@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
@@ -12,9 +10,6 @@
     root ALL=(ALL:ALL) ALL
     tenshou170 ALL=(ALL:ALL) ALL
   '';
-
-  # Default shell
-  users.defaultUserShell = pkgs.zsh;
 
   # System packages
   environment.systemPackages = with pkgs; [

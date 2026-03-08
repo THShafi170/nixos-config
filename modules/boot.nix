@@ -1,7 +1,5 @@
 {
-  config,
   inputs,
-  lib,
   pkgs,
   ...
 }:
@@ -9,7 +7,7 @@
 {
   # Overlay for nix-cachyos-kernel
   nixpkgs.overlays = [
-    inputs.nix-cachyos-kernel.overlays.default
+    inputs.nix-cachyos-kernel.overlays.pinned
   ];
 
   # Boot configuration
@@ -25,7 +23,7 @@
       efi.canTouchEfiVariables = true;
     };
 
-    # Kernel configuration, using CachyOS kernel
+    # Kernel configuration
     kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
     # Essential kernel modules loaded at boot
@@ -48,7 +46,7 @@
       "iommu=pt"
     ];
 
-    # Kernel runtime parameters (sysctl)
+    # Kernel runtime parameters
     kernel.sysctl = {
       "vm.max_map_count" = 2147483642;
     };
@@ -90,12 +88,11 @@
   };
 
   # Sleep and hibernation behavior
-  systemd.sleep.extraConfig = ''
-    [Sleep]
-    AllowSuspendThenHibernate=yes
-    HibernateMode=shutdown
-    HibernateDelaySec=3600
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowSuspendThenHibernate = "yes";
+    HibernateMode = "shutdown";
+    HibernateDelaySec = "60min";
+  };
 
   # sched_ext configuration
   services.scx = {

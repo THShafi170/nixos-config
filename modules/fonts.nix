@@ -1,12 +1,10 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
 
 {
-  # Shared font packages list
+  # Shared fonts
   config = {
     _module.args.sharedFonts = with pkgs; [
       # Essential fonts

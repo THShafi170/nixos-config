@@ -1,14 +1,10 @@
 {
-  config,
-  inputs,
-  lib,
   pkgs,
   sharedFonts,
   ...
 }:
 
 {
-  # Import other configurations for reference
   imports = [
     ./hardware-configuration.nix
     ../modules
@@ -30,7 +26,6 @@
     extraLocales = [
       "bn_BD/UTF-8"
       "ja_JP.UTF-8/UTF-8"
-      "ko_KR.UTF-8/UTF-8"
       "ru_RU.UTF-8/UTF-8"
       "ru_UA.UTF-8/UTF-8"
       "zh_CN.UTF-8/UTF-8"
@@ -52,7 +47,7 @@
   # Console configuration
   console = {
     packages = [ pkgs.terminus_font ];
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-122n.psf.gz";
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-124n.psf.gz";
     keyMap = "us";
   };
 
@@ -88,45 +83,55 @@
     services.nix-daemon.environment.TMPDIR = "/var/tmp";
   };
 
-  # nixpkgs configuration
-  nixpkgs.config.allowUnfree = true;
+  # Nix configuration
+  nixpkgs.overlays = [
+    (final: prev: {
+      inherit (prev.lixPackageSets.latest)
+        colmena
+        nixpkgs-review
+        nix-eval-jobs
+        nix-fast-build
+        nix-init
+        nix-update
+        nurl
+        ;
+    })
+  ];
 
-  # Nix package manager configuration
-  nix.settings = {
-    auto-optimise-store = true;
-    builders-use-substitutes = true;
-    download-buffer-size = 1073700000;
-    max-jobs = 4;
-    cores = 4;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    trusted-users = [
-      "root"
-      "tenshou170"
-    ];
-    # Binary cache sources
-    substituters = [
-      "https://attic.xuyh0120.win/lantian"
-      "https://nix-community.cachix.org"
-      "https://vicinae.cachix.org"
-      "https://ezkea.cachix.org"
-      "https://cutecosmic.cachix.org"
-    ];
-    # Public keys for binary caches
-    trusted-public-keys = [
-      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
-      "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
-      "cutecosmic.cachix.org-1:M2oYEewcaHGXvY5E0gk5hM/te42lRJHeG+x6v7VmWoo="
-    ];
+  nix = {
+    package = pkgs.lixPackageSets.latest.lix;
+    settings = {
+      auto-optimise-store = true;
+      builders-use-substitutes = true;
+      download-buffer-size = 1073700000;
+      max-jobs = 4;
+      cores = 4;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [
+        "root"
+        "tenshou170"
+      ];
+      # Binary caches
+      substituters = [
+        "https://attic.xuyh0120.win/lantian"
+        "https://nix-community.cachix.org"
+        "https://vicinae.cachix.org"
+        "https://ezkea.cachix.org"
+        "https://bottles-deflatpak.cachix.org"
+      ];
+      trusted-public-keys = [
+        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
+        "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
+        "bottles-deflatpak.cachix.org-1:YT/o8RO4yysuReUamuL09Db+O7PA5FtsYqeRXSfbweE="
+      ];
+    };
   };
 
-  # Allow unfree packages globally
-  environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
-
-  # System State Version
+  # State version
   system.stateVersion = "26.05";
 }

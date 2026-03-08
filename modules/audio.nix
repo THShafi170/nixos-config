@@ -1,12 +1,10 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
 
 {
-  # Real-time configuration
+  # Real-time
   security.rtkit.enable = true;
   systemd.services.rtkit-daemon = {
     serviceConfig = {
@@ -17,7 +15,7 @@
     };
   };
 
-  # PipeWire configuration
+  # PipeWire
   services.pipewire = {
     enable = true;
     socketActivation = true;
@@ -30,7 +28,7 @@
     wireplumber.enable = true;
   };
 
-  # Echo cancellation configuration
+  # Echo cancellation
   services.pipewire.extraConfig.pipewire."60-echo-cancel" = {
     "context.modules" = [
       {
@@ -38,13 +36,8 @@
         args = {
           "monitor.mode" = "true";
           "capture.props" = {
-            # "node.target" = "alsa_input.usb-UGREEN_Camera_UGREEN_Camera_SN0001-02.analog-stereo";
             "node.passive" = "true";
-            # "node.force-quantum" = "256";
           };
-          # "sink.props" = {
-          #   "node.target" = "alsa_output.usb-UGREEN_Camera_UGREEN_Camera_SN0001-02.analog-stereo";
-          # };
           "source.props" = {
             "node.name" = "source_ec";
             "node.description" = "Echo-cancelled source";
@@ -60,7 +53,7 @@
     ];
   };
 
-  # WirePlumber configuration for disabling audio device suspension
+  # WirePlumber
   services.pipewire.wireplumber.extraConfig."51-disable-suspension" = {
     "monitor.alsa.rules" = [
       {

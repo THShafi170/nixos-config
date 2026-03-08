@@ -1,7 +1,5 @@
 {
-  config,
   inputs,
-  lib,
   pkgs,
   ...
 }:
@@ -68,7 +66,7 @@
       pixman
       vulkan-loader
       freeglut
-      glew110
+      glew_1_10
 
       # GUI toolkit libraries
       atk
@@ -119,27 +117,27 @@
       libudev0-shim
 
       # X11 libraries
-      xorg.libICE
-      xorg.libSM
-      xorg.libX11
-      xorg.libXScrnSaver
-      xorg.libXcomposite
-      xorg.libXcursor
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXft
-      xorg.libXi
-      xorg.libXinerama
-      xorg.libXmu
-      xorg.libXrandr
-      xorg.libXrender
-      xorg.libXt
-      xorg.libXtst
-      xorg.libXxf86vm
-      xorg.libxcb
-      xorg.libxkbfile
-      xorg.libxshmfence
+      libICE
+      libSM
+      libX11
+      libXScrnSaver
+      libXcomposite
+      libXcursor
+      libXdamage
+      libXext
+      libXfixes
+      libXft
+      libXi
+      libXinerama
+      libXmu
+      libXrandr
+      libXrender
+      libXt
+      libXtst
+      libXxf86vm
+      libxcb
+      libxkbfile
+      libxshmfence
     ];
   };
 }

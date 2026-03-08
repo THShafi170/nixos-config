@@ -1,12 +1,9 @@
 {
-  config,
-  lib,
-  pkgs,
   ...
 }:
 
 {
-  # Configure power management settings
+  # Power management
   services = {
     logind.settings.Login = {
       SleepOperation = "suspend-then-hibernate";

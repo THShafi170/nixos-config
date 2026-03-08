@@ -7,7 +7,7 @@
   # Enable Fish shell
   programs.fish = {
     enable = true;
-    # Useful shell aliases for common tasks
+    # Aliases
     shellAliases = {
       free = "free -m";
       nix-switch = "sudo nixos-rebuild switch --flake /etc/nixos#X1-Yoga-2nd";
@@ -16,14 +16,12 @@
     };
     # Custom Fish functions
     functions = {
-      # Show system info on shell startup
+      # System greeting
       fish_greeting = {
-        description = "Start fastfetch at launch.";
         body = "fastfetch";
       };
-      # Pull all git repositories in subdirectories
+      # Git pull helper
       git-pull-all = {
-        description = "Recursively pull all git repositories with error handling";
         body = ''
           for gitdir in (find . -name ".git" -type d)
             set repo (dirname "$gitdir")
@@ -43,13 +41,15 @@
     };
   };
 
-  # Starship prompt - Modern, Minimal, & Nix-Integrated
+  # Starship
   programs.starship = {
     enable = true;
+    enableFishIntegration = true;
+    enableTransience = true;
     settings = {
       add_newline = true;
 
-      # minimal left-side prompt: directory > git > nix > tools > duration > line break > char
+      # Prompt format
       format = lib.concatStrings [
         "$username"
         "$hostname"
@@ -65,8 +65,7 @@
         "$character"
       ];
 
-      # Move language versions to the right to keep the main prompt clean
-      # (Or move them back to 'format' if you prefer them on the left)
+      # Right prompt format
       right_format = lib.concatStrings [
         "$package"
         "$python"
@@ -91,9 +90,7 @@
         pure_msg = "[pure](bold green)";
       };
 
-      # -----------------------------------------------------------------------
-      # Aesthetics & Symbols
-      # -----------------------------------------------------------------------
+      # Character
       character = {
         success_symbol = "[❯](bold green)";
         error_symbol = "[❯](bold red)";
@@ -129,7 +126,7 @@
         behind = "⇣\${count}";
         stashed = " ";
         modified = " ";
-        staged = "[++\($count\)](green)";
+        staged = "[++(\${count})](green)";
         renamed = "襁 ";
         deleted = " ";
       };
@@ -153,9 +150,7 @@
         style = "bold green";
       };
 
-      # -----------------------------------------------------------------------
-      # Language Stacks (Minimal: No "via", "is", etc.)
-      # -----------------------------------------------------------------------
+      # Language stacks
       package = {
         symbol = "📦 ";
         format = "[$symbol$version]($style) ";
@@ -164,7 +159,7 @@
 
       python = {
         symbol = "🐍 ";
-        format = "[$symbol$version(\($virtualenv\))]($style) ";
+        format = "[$symbol$version(\\($virtualenv\\))]($style) ";
         style = "bold yellow";
       };
 

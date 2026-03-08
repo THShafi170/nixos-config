@@ -1,7 +1,4 @@
 {
-  config,
-  lib,
-  inputs,
   pkgs,
   ...
 }:
@@ -12,7 +9,7 @@
   ];
 
   services = {
-    # COSMIC Desktop Environment
+    # COSMIC
     desktopManager.cosmic = {
       enable = true;
       xwayland.enable = true;
@@ -25,7 +22,7 @@
     gvfs.enable = true;
   };
 
-  # COSMIC-focused application packages
+  # System packages
   environment.systemPackages = with pkgs; [
     # Extensions
     cosmic-ext-ctl
@@ -33,8 +30,11 @@
     cosmic-ext-calculator
     cosmic-ext-applet-caffeine
     cosmic-ext-applet-weather
+    cosmic-ext-applet-privacy-indicator
 
     (vivaldi.override {
+      proprietaryCodecs = true;
+      enableWidevine = true;
       commandLineArgs = [
         "--password-store=gnome-libsecret"
         "--ozone-platform=wayland"
@@ -65,16 +65,23 @@
     showtime
     xdg-user-dirs-gtk
 
+    # Nemo file manager and extensions
+    file-roller
+    nemo
+    nemo-with-extensions
+    nemo-python
+    nemo-preview
+    nemo-seahorse
+    nemo-fileroller
+
     # Theming
-    inputs.cutecosmic.packages.${pkgs.stdenv.hostPlatform.system}.default
+    cutecosmic
     bibata-cursors
     kdePackages.breeze
     kdePackages.breeze-gtk
     kdePackages.breeze-icons
     kdePackages.qqc2-breeze-style
     adw-gtk3
-    qadwaitadecorations
-    qadwaitadecorations-qt6
     themechanger
 
     # System tools
@@ -83,14 +90,12 @@
     xsettingsd
 
     # Wayland
-    wl-clipboard
     xwayland
     wayland-utils
   ];
 
   # Essential programs
   programs = {
-    dconf.enable = true;
     seahorse.enable = true;
     gnupg.agent = {
       enable = true;
@@ -109,22 +114,27 @@
   # XDG portals for COSMIC
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal
       xdg-desktop-portal-cosmic
       xdg-desktop-portal-gtk
     ];
-    config.common.default = "cosmic";
+    config.common = {
+      default = [
+        "cosmic"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+    };
   };
 
-  # COSMIC-specific environment variables
+  # Environment variables
   environment.sessionVariables = {
     # COSMIC-specific
     COSMIC_DATA_CONTROL_ENABLED = "1";
 
     # Qt settings
     QT_QPA_PLATFORMTHEME = "cosmic";
-    QT_WAYLAND_DECORATION = "adwaita";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
 
     # Wayland

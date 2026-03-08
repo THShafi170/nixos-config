@@ -1,12 +1,10 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
 
 {
-  # Input method configuration with fcitx5
+  # Input method
   i18n = {
     inputMethod = {
       enable = true;
@@ -29,4 +27,5 @@
       };
     };
   };
+
 }

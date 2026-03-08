@@ -1,19 +1,17 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
 
 {
-  #Set location provider to geoclue2
+  # Location
   location.provider = "geoclue2";
 
   # Enable power management
   powerManagement.enable = true;
 
   services = {
-    # Crucial services
+    # Services
     fstrim.enable = true;
     btrfs.autoScrub.enable = true;
     fwupd.enable = true;
@@ -23,13 +21,13 @@
     accounts-daemon.enable = true;
     envfs.enable = true;
 
-    # UDisk configuration
+    # UDisks
     udisks2 = {
       enable = true;
       mountOnMedia = true;
     };
 
-    # Geoclue2 configuration
+    # Geoclue2
     geoclue2 = {
       enable = true;
       geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
@@ -56,7 +54,7 @@
       openFirewall = true;
     };
 
-    # seatd configuration
+    # seatd
     seatd = {
       enable = true;
       user = "tenshou170";
@@ -64,9 +62,8 @@
 
     # Desktop services
     tumbler.enable = true;
-    timesyncd.enable = true;
 
-    # X11 Display Server (Disabled, using Wayland)
+    # X Server
     xserver = {
       enable = false;
       wacom.enable = true;

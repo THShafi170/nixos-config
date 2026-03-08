@@ -1,3 +1,35 @@
-# The following files are ignored by git until I get a proper working build
-# hosts/hardware-configuration.nix
-# flake.lock
+# NixOS / Flake
+result
+result-*
+.direnv/
+.devenv/
+
+# IDEs and Editors
+.vscode/
+.idea/
+.zed/
+*.swp
+*~
+.DS_Store
+
+# Python
+__pycache__/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+
+# Rust
+target/
+
+# Node
+node_modules/
+.npm/
+.pnpm-store/
+
+# System
+*.iso
+*.img
+*.qcow2
+/tmp/

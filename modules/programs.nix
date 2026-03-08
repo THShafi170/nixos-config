@@ -1,8 +1,5 @@
 {
-  aagl,
-  config,
   inputs,
-  lib,
   pkgs,
   sharedFonts,
   ...
@@ -12,6 +9,7 @@
   # System packages
   environment.systemPackages = with pkgs; [
     # System utilities
+    binwalk
     btop
     btrfs-progs
     colord
@@ -47,24 +45,16 @@
     heimdall
 
     # Communication
-    (discord-ptb.override {
+    (discord.override {
       withEquicord = true;
     })
     zapzap
 
-    # Web browsers
-    # vivaldi has different overrides for both COSMIC and Plasma6
-    # google-chrome has different overrides for both COSMIC and Plasma6 (Needed for Antigravity)
-    vivaldi-ffmpeg-codecs
-
     # Gaming & Wine
-    (bottles.override {
-      removeWarningPopup = true;
-    })
+    inputs.bottles-deflatpak.packages.${pkgs.stdenv.hostPlatform.system}.bottles-deflatpak-unwrapped
     heroic
     lutris
     mangohud
-    goverlay
     protonplus
     steam
     steamcmd
@@ -72,25 +62,16 @@
     umu-launcher
     vkbasalt
     vkbasalt-cli
-    wineWowPackages.fonts
-    wineWowPackages.stagingFull
+    wineWow64Packages.fonts
+    wineWow64Packages.stagingFull
     winetricks
 
     # Emulations
     dosbox-x
-    (_86Box-with-roms.override {
+    (_86box-with-roms.override {
       unfreeEnableDiscord = true;
       unfreeEnableRoms = true;
     })
-
-    # Nemo file manager and extensions
-    file-roller
-    nemo
-    nemo-with-extensions
-    nemo-python
-    nemo-preview
-    nemo-seahorse
-    nemo-fileroller
 
     # Other programs
     gnome-boxes
@@ -100,12 +81,11 @@
     onlyoffice-desktopeditors
     qbittorrent
 
-    # Archives & Tools
+    # Archives & Compression
     rar
     p7zip
     unzip
     unrar
-    equicord
     freetype
     varia
   ];
@@ -113,34 +93,28 @@
   # Environment variables
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    NIXPKGS_ALLOW_UNFREE = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
     ELECTRON_ENABLE_HARDWARE_ACCELERATION = "1";
   };
 
   # Services
-  services.flatpak.enable = true;
+  services.flatpak = {
+    enable = true;
+    remotes = [
+      {
+        name = "flathub";
+        location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+      }
+    ];
+  };
 
   # XDG configuration
-  xdg = {
-    autostart.enable = true;
-    icons.enable = true;
-    menus.enable = true;
-    mime.enable = true;
-    portal.xdgOpenUsePortal = true;
-    sounds.enable = true;
-  };
-
-  # Flatpak repo setup
-  systemd.services.flatpak-repo = {
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.flatpak ];
-    script = "flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo";
-  };
+  xdg.portal.xdgOpenUsePortal = true;
 
   # Programs configuration
   programs = {
     # Basic programs
-    adb.enable = true;
     command-not-found.enable = true;
     chromium.enable = true;
     dconf.enable = true;
@@ -154,10 +128,10 @@
       extraPackages =
         with pkgs;
         [
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXcomposite
+          libXcursor
+          libXi
+          libXinerama
+          libXcomposite
           libGL
           vulkan-loader
           libpulseaudio

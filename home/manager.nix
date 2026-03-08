@@ -1,7 +1,4 @@
 {
-  inputs,
-  pkgs,
-  pkgsMaster,
   ...
 }:
 
@@ -13,7 +10,7 @@
     stateVersion = "26.05";
   };
 
-  # Enable home-manager self-management
+  # Enable home-manager
   programs.home-manager.enable = true;
 
   # XDG user directories configuration
@@ -22,14 +19,14 @@
     createDirectories = true;
   };
 
-  # Git + GitHub CLI configuration
+  # Git
   programs = {
     git = {
       enable = true;
       lfs.enable = true;
       settings.user = {
-        name = "Tenshou Zmeyev";
-        email = "tenshou170@gmail.com";
+        name = "Tawsif Hossain Shafi";
+        email = "thshafi170@gmail.com";
       };
     };
     gh = {

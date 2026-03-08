@@ -1,9 +1,7 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
-
   ...
 }:
 
@@ -16,34 +14,40 @@
       "cargo"
       "clippy"
       "rust-src"
+      "rust-std"
       "rustc"
       "rustfmt"
     ])
+    rustup
     rust-analyzer
 
-    # Python with development packages
+    # Python
     (python3.withPackages (
       ps: with ps; [
         pip
-        black
-        flake8
-        mypy
         pytest
         requests
         numpy
         pandas
-        python-lsp-server
-        pylsp-mypy
-        python-lsp-black
+        virtualenv
       ]
     ))
+    uv
+    ruff
+    pyright
 
-    # More development languages
+    # Go
     go
+    gopls
+    delve
 
     # Core development tools
-    jdk
+    jdk21
+    maven
+    gradle
     gcc
+    ninja
+    ccache
     cachix
     clang
     cmake
@@ -55,30 +59,16 @@
     pkg-config
 
     # Code editors and IDEs
-    jetbrains.pycharm-community-bin
-    (vscode.override {
-      commandLineArgs = [
-        "--ozone-platform=wayland"
-      ];
-    }).fhs
-    (antigravity.override {
-      commandLineArgs = [
-        "--ozone-platform=wayland"
-      ];
-    }).fhs
-    zed-editor
+    vscode-fhs
+    antigravity-fhs
 
     # Command line tools
+    nh
+    nix-output-monitor
     jq
     tree
     ripgrep
-    fd
-    bat
-    gh
-    direnv
     fakeroot
-    git
-    gh
     libcap
     sqlite
     nix-search-tv
@@ -86,10 +76,14 @@
     # Language servers and formatters
     nixd
     nixfmt
+    nixfmt-tree
     clang-tools
-    omnisharp-roslyn
-    jdt-language-server
+    typescript-language-server
+    vtsls
+    nodePackages.vscode-langservers-extracted
     yaml-language-server
+    taplo
+    marksman
 
     # JavaScript/Node.js development
     nodejs_24
@@ -117,7 +111,6 @@
     # Rust
     RUST_BACKTRACE = "1";
     CARGO_HOME = "$HOME/.cargo";
-    # Move target dir to user cache to avoid /tmp permission clashes and keep it persistent across reboots
     CARGO_TARGET_DIR = "$HOME/.cache/cargo-target";
 
     # .NET
@@ -127,7 +120,7 @@
     # Java
     JAVA_HOME = "${pkgs.jdk}";
 
-    # C/C++ - Use 'lib.getExe' for safer path resolution on Unstable
+    # C/C++
     CC = lib.getExe' pkgs.gcc "gcc";
     CXX = lib.getExe' pkgs.gcc "g++";
 
