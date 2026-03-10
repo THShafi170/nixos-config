@@ -132,6 +132,16 @@
     };
   };
 
-  # State version
-  system.stateVersion = "26.05";
+  # System configurations
+  system = {
+    # State version
+    stateVersion = "26.05";
+    # Enable nixos-init
+    nixos-init.enable = true;
+    # /etc overlay, needed for nixos-init
+    etc.overlay = {
+      enable = true;
+      mutable = true;
+    };
+  };
 }
