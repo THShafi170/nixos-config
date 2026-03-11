@@ -31,6 +31,7 @@
       ];
     };
     resolvconf.enable = true;
+    mihoyo-telemetry.block = true;
   };
 
   # SSH service

@@ -23,6 +23,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    vicinae.url = "github:vicinaehq/vicinae";
+
+    vicinae-extensions = {
+      url = "github:vicinaehq/extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     aagl = {
       url = "github:ezKEa/aagl-gtk-on-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,6 +51,8 @@
       nixpkgs,
       home-manager,
       nix-cachyos-kernel,
+      vicinae,
+      vicinae-extensions,
       aagl,
       bottles-deflatpak,
       ...
@@ -64,9 +73,26 @@
           config = nixpkgsConfig;
         };
 
+      pkgs = mkPkgs inputs.nixpkgs;
       pkgsMaster = mkPkgs inputs.nixpkgs-master;
     in
     {
+      # Custom overlays
+      overlays.default =
+        final: prev:
+        (import ./pkgs {
+          inherit (final) callPackage;
+          inherit (prev) lib;
+        });
+
+      # Expose custom packages allowing for direct builds
+      packages.${system} = import ./pkgs {
+        inherit (pkgs) callPackage lib;
+      };
+
+      # Allow standard 'nix fmt' to run cleanly
+      formatter.${system} = pkgs.nixfmt;
+
       nixosConfigurations."X1-Yoga-2nd" = nixpkgs.lib.nixosSystem {
         inherit system;
 
@@ -81,6 +107,7 @@
           {
             nixpkgs = {
               config = nixpkgsConfig;
+              overlays = [ self.overlays.default ];
             };
           }
 
@@ -96,6 +123,8 @@
                   aagl
                   inputs
                   pkgsMaster
+                  vicinae
+                  vicinae-extensions
                   ;
               };
             };
@@ -109,6 +138,8 @@
             aagl
             inputs
             pkgsMaster
+            vicinae
+            vicinae-extensions
             ;
         };
       };
