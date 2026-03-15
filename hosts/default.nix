@@ -103,7 +103,6 @@
     settings = {
       auto-optimise-store = true;
       builders-use-substitutes = true;
-      download-buffer-size = 1073700000;
       max-jobs = 4;
       cores = 4;
       experimental-features = [
@@ -132,16 +131,6 @@
     };
   };
 
-  # System configurations
-  system = {
-    # State version
-    stateVersion = "26.05";
-    # Enable nixos-init
-    nixos-init.enable = true;
-    # /etc overlay, needed for nixos-init
-    etc.overlay = {
-      enable = true;
-      mutable = true;
-    };
-  };
+  # State Version
+  system.stateVersion = "26.05";
 }

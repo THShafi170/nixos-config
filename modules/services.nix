@@ -19,7 +19,6 @@
     thermald.enable = true;
     dbus.implementation = "broker";
     accounts-daemon.enable = true;
-    userborn.enable = true;
     envfs.enable = true;
 
     # UDisks
