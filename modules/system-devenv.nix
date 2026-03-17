@@ -6,20 +6,14 @@
 }:
 
 {
-
-  # Development environment configuration
   environment.systemPackages = with pkgs; [
-    # Rust development tools
-    (inputs.fenix.packages.${pkgs.stdenv.hostPlatform.system}.complete.withComponents [
-      "cargo"
-      "clippy"
-      "rust-src"
-      "rust-std"
-      "rustc"
-      "rustfmt"
-    ])
+    # Rust
+    # rustup is the sole toolchain manager. Fenix components must not be added
+    # here — they shadow rustup's proxies in /run/current-system/sw/bin/.
+    # rust-analyzer is also omitted: install via `rustup component add rust-analyzer`
+    # so it stays in sync with the active toolchain.
     rustup
-    rust-analyzer
+    cargo-nextest
 
     # Python
     (python3.withPackages (
@@ -41,6 +35,12 @@
     gopls
     delve
 
+    # Windows cross-compilation via MinGW
+    # Places x86_64-w64-mingw32-gcc and friends in /run/current-system/sw/bin/,
+    # which ~/.cargo/config.toml (managed by rust.nix) references directly.
+    pkgsCross.mingwW64.stdenv.cc
+    wine64
+
     # Core development tools
     jdk21
     maven
@@ -49,20 +49,22 @@
     ninja
     ccache
     cachix
-    clang
+    clang # used as the mold linker driver for Linux targets
     cmake
     devenv
     gnumake
     gdb
     dotnet-sdk
     mono
+    mold
     pkg-config
+    openssl
 
-    # Code editors and IDEs
+    # Editors
     vscode-fhs
     antigravity-fhs
 
-    # Command line tools
+    # CLI tools
     nh
     nix-output-monitor
     jq
@@ -85,19 +87,16 @@
     taplo
     marksman
 
-    # JavaScript/Node.js development
+    # JavaScript / Node.js
     nodejs_24
     pnpm
   ];
 
-  # Enable some development tools
   programs = {
-    # Enable Java
     java = {
       enable = true;
       package = pkgs.jdk;
     };
-    # Enable direnv
     direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -106,12 +105,13 @@
     };
   };
 
-  # Set development environment variables
   environment.sessionVariables = {
     # Rust
     RUST_BACKTRACE = "1";
+    RUSTUP_HOME = "$HOME/.rustup";
     CARGO_HOME = "$HOME/.cargo";
     CARGO_TARGET_DIR = "$HOME/.cache/cargo-target";
+    PKG_CONFIG_ALLOW_CROSS = "1";
 
     # .NET
     DOTNET_CLI_TELEMETRY_OPTOUT = "1";

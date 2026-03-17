@@ -39,16 +39,21 @@
     webp-pixbuf-loader
     wpgtk
     xournalpp
+    mangayomi
 
     # Android tools
     android-tools
     heimdall
 
     # Communication
-    (discord.override {
-      withEquicord = true;
-    })
+    #(discord-ptb.override {
+    #  withEquicord = true;
+    #})
+    osmium
+    equibop
+    arrpc
     zapzap
+    zulip
 
     # Gaming & Wine
     inputs.bottles-deflatpak.packages.${pkgs.stdenv.hostPlatform.system}.bottles-deflatpak-unwrapped

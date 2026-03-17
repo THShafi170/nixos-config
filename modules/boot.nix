@@ -7,7 +7,7 @@
 {
   # Overlay for nix-cachyos-kernel
   nixpkgs.overlays = [
-    inputs.nix-cachyos-kernel.overlays.pinned
+    inputs.nix-cachyos-kernel.overlays.default
   ];
 
   # Boot configuration
@@ -52,7 +52,7 @@
     };
 
     # Hibernation & Power Management
-    resumeDevice = "/dev/disk/by-uuid/84a6325c-7323-422f-856c-bb74f670e9a7";
+    resumeDevice = "/dev/disk/by-uuid/73508ce6-9a32-4819-9335-ae49af24622d";
 
     # initrd configuration
     initrd = {

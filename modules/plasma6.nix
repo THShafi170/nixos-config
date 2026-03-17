@@ -30,19 +30,6 @@
       adwaita-icon-theme
       adw-gtk3
       bibata-cursors
-      (colloid-icon-theme.override {
-        schemeVariants = [ "default" ];
-        colorVariants = [ "all" ];
-      })
-      (fluent-gtk-theme.override {
-        themeVariants = [ "all" ];
-        colorVariants = [ "standard" ];
-        sizeVariants = [ "standard" ];
-        tweaks = [
-          "solid"
-          "float"
-        ];
-      })
       vlc
       (
         (vivaldi.override {

@@ -4,23 +4,27 @@
 }:
 
 {
-  # Enable Fish shell
   programs.fish = {
     enable = true;
-    # Aliases
+
     shellAliases = {
       free = "free -m";
       nix-switch = "sudo nixos-rebuild switch --flake /etc/nixos#X1-Yoga-2nd";
       nix-upgrade = "sudo nix flake update --flake /etc/nixos#X1-Yoga-2nd && sudo nixos-rebuild switch --flake /etc/nixos#X1-Yoga-2nd";
       nix-clean = "sudo nix profile wipe-history --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage && sudo nixos-rebuild boot --flake /etc/nixos#X1-Yoga-2nd";
     };
-    # Custom Fish functions
+
+    # Puts rustup-managed binaries (cargo, rustc, rust-analyzer) first on PATH.
+    # CARGO_HOME is set via environment.sessionVariables in system-devenv.nix.
+    interactiveShellInit = ''
+      fish_add_path "$CARGO_HOME/bin"
+    '';
+
     functions = {
-      # System greeting
       fish_greeting = {
         body = "fastfetch";
       };
-      # Git pull helper
+
       git-pull-all = {
         body = ''
           for gitdir in (find . -name ".git" -type d)
@@ -41,7 +45,6 @@
     };
   };
 
-  # Starship
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
@@ -49,7 +52,6 @@
     settings = {
       add_newline = true;
 
-      # Prompt format
       format = lib.concatStrings [
         "$username"
         "$hostname"
@@ -65,7 +67,6 @@
         "$character"
       ];
 
-      # Right prompt format
       right_format = lib.concatStrings [
         "$package"
         "$python"
@@ -77,9 +78,6 @@
         "$terraform"
       ];
 
-      # -----------------------------------------------------------------------
-      # Core Integration: Nix Shell
-      # -----------------------------------------------------------------------
       nix_shell = {
         disabled = false;
         heuristic = true;
@@ -90,16 +88,13 @@
         pure_msg = "[pure](bold green)";
       };
 
-      # Character
       character = {
         success_symbol = "[❯](bold green)";
         error_symbol = "[❯](bold red)";
         vimcmd_symbol = "[❮](bold green)";
       };
 
-      fill = {
-        symbol = " ";
-      };
+      fill.symbol = " ";
 
       directory = {
         truncation_length = 3;
@@ -110,7 +105,7 @@
       };
 
       git_branch = {
-        symbol = " ";
+        symbol = " ";
         format = "[$symbol$branch]($style) ";
         style = "bold purple";
       };
@@ -120,15 +115,15 @@
         style = "bold red";
         conflicted = "🏳";
         up_to_date = "";
-        untracked = " ";
+        untracked = " ";
         ahead = "⇡\${count}";
         diverged = "⇕⇡\${ahead_count}⇣\${behind_count}";
         behind = "⇣\${count}";
-        stashed = " ";
-        modified = " ";
+        stashed = " ";
+        modified = " ";
         staged = "[++(\${count})](green)";
-        renamed = "襁 ";
-        deleted = " ";
+        renamed = "襁 ";
+        deleted = " ";
       };
 
       cmd_duration = {
@@ -150,7 +145,6 @@
         style = "bold green";
       };
 
-      # Language stacks
       package = {
         symbol = "📦 ";
         format = "[$symbol$version]($style) ";
@@ -176,7 +170,7 @@
       };
 
       nodejs = {
-        symbol = " ";
+        symbol = " ";
         format = "[$symbol$version]($style) ";
         style = "bold green";
       };

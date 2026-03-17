@@ -31,9 +31,12 @@
     git = {
       enable = true;
       lfs.enable = true;
-      settings.user = {
-        name = "Tawsif Hossain Shafi";
-        email = "thshafi170@gmail.com";
+      settings = {
+        user = {
+          name = "Tawsif Hossain Shafi";
+          email = "thshafi170@gmail.com";
+        };
+        core.editor = "nano";
       };
     };
     gh = {
@@ -54,15 +57,12 @@
       };
     };
     extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-      bluetooth
       case-converter
-      chromium-bookmarks
       color-converter
       fuzzy-files
       github
       kde-system-settings
       nix
-      podman
       power-profile
       process-manager
       ssh

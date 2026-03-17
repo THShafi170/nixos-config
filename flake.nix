@@ -2,7 +2,6 @@
   description = "tenshou170's NixOS configuration";
 
   inputs = {
-    # Repositories
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
@@ -60,12 +59,10 @@
     let
       system = "x86_64-linux";
 
-      # Centralized nixpkgs configuration
       nixpkgsConfig = {
         allowUnfree = true;
       };
 
-      # Helper to instantiate nixpkgs with our global config
       mkPkgs =
         input:
         import input {
@@ -77,7 +74,6 @@
       pkgsMaster = mkPkgs inputs.nixpkgs-master;
     in
     {
-      # Custom overlays
       overlays.default =
         final: prev:
         (import ./pkgs {
@@ -85,12 +81,10 @@
           inherit (prev) lib;
         });
 
-      # Expose custom packages allowing for direct builds
       packages.${system} = import ./pkgs {
         inherit (pkgs) callPackage lib;
       };
 
-      # Allow standard 'nix fmt' to run cleanly
       formatter.${system} = pkgs.nixfmt;
 
       nixosConfigurations."X1-Yoga-2nd" = nixpkgs.lib.nixosSystem {
@@ -103,15 +97,19 @@
           inputs.home-manager.nixosModules.home-manager
           inputs.nix-flatpak.nixosModules.nix-flatpak
 
-          # Configure nixpkgs
           {
             nixpkgs = {
               config = nixpkgsConfig;
-              overlays = [ self.overlays.default ];
+              overlays = [
+                self.overlays.default
+                # Fenix overlay — makes pkgs.fenix available for opt-in use in
+                # per-project devShells. No toolchain components are added to
+                # systemPackages; rustup handles day-to-day toolchain management.
+                inputs.fenix.overlays.default
+              ];
             };
           }
 
-          # Home Manager configuration
           {
             home-manager = {
               useGlobalPkgs = true;
@@ -131,7 +129,6 @@
           }
         ];
 
-        # Pass inputs through specialArgs
         specialArgs = {
           inherit
             self

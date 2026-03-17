@@ -4,6 +4,21 @@
 }:
 
 {
+  # Fix virt-manager: enable libguestfs introspection and system tray on Wayland (Plasma 6)
+  nixpkgs.overlays = [
+    (final: prev: {
+      virt-manager = prev.virt-manager.overrideAttrs (old: {
+        preFixup = (old.preFixup or "") + ''
+          gappsWrapperArgs+=(
+            "--prefix" "PYTHONPATH" ":"
+            "${final.libguestfs-with-appliance}/lib/${final.python3.libPrefix}/site-packages"
+            "--unset" "WAYLAND_DISPLAY"
+          )
+        '';
+      });
+    })
+  ];
+
   # Virtualisation
   virtualisation = {
     # libvirt
@@ -49,7 +64,6 @@
 
     # Guest management
     libguestfs-with-appliance
-    python3Packages.guestfs
 
     # Tools
     distrobox

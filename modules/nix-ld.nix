@@ -5,17 +5,15 @@
 }:
 
 {
-  # Enable nix-alien
   environment.systemPackages = with inputs.nix-alien.packages."${pkgs.stdenv.hostPlatform.system}"; [
     nix-alien
   ];
 
-  # Enable nix-ld for dynamic linking compatibility
   programs.nix-ld = {
     enable = true;
     libraries = with pkgs; [
       # System essentials
-      stdenv.cc.cc
+      stdenv.cc.cc.lib
       dbus
       expat
       icu
@@ -27,7 +25,7 @@
       util-linux
       tbb
 
-      # Audio libraries
+      # Audio
       alsa-lib
       flac
       libcaca
@@ -47,7 +45,7 @@
       zlib
       zstd
 
-      # Font support
+      # Fonts
       fontconfig
       freetype
       libidn
@@ -68,7 +66,7 @@
       freeglut
       glew_1_10
 
-      # GUI toolkit libraries
+      # GUI toolkits
       atk
       at-spi2-atk
       at-spi2-core
@@ -93,7 +91,7 @@
       # Multimedia
       ffmpeg
 
-      # SDL gaming libraries
+      # SDL
       SDL
       SDL2
       SDL2_image
@@ -116,7 +114,12 @@
       fakeroot
       libudev0-shim
 
-      # X11 libraries
+      # Rust toolchain (needed by rustup-downloaded binaries)
+      libiconv
+      curl
+      libgit2
+
+      # X11
       libICE
       libSM
       libX11
