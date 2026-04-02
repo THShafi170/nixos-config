@@ -34,6 +34,7 @@
         dynamic_tuning = true;
       };
     };
+    tlp.enable = false;
     "06cb-009a-fingerprint-sensor" = {
       enable = true;
       backend = "python-validity";
@@ -104,7 +105,6 @@
       enable = true;
       daemon.enable = true;
     };
-    sensor.iio.enable = true;
   };
 
   # Environment variables

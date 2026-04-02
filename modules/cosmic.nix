@@ -5,7 +5,7 @@
 
 {
   imports = [
-    ../services/power-wm.nix
+    ../services/config-wm.nix
   ];
 
   services = {

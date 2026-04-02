@@ -16,6 +16,7 @@
     ./programs.nix
     ./services.nix
     ./shell-sudo.nix
+    ./starship.nix
     ./system-devenv.nix
     ./virtualisation.nix
   ];

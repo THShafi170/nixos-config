@@ -7,8 +7,6 @@
   # Sudo configuration
   security.sudo.extraConfig = ''
     Defaults env_reset,pwfeedback
-    root ALL=(ALL:ALL) ALL
-    tenshou170 ALL=(ALL:ALL) ALL
   '';
 
   # System packages
@@ -17,15 +15,10 @@
     fishPlugins.done
     fishPlugins.fzf-fish
     fishPlugins.forgit
-    fishPlugins.hydro
     fishPlugins.grc
 
     # Zsh plugins
-    zsh
-    zsh-completions
-    zsh-autosuggestions
     zsh-history-substring-search
-    zsh-syntax-highlighting
 
     # Utilities
     bat
@@ -54,17 +47,10 @@
     histSize = 10000;
     histFile = "$HOME/.zsh_history";
 
-    # Oh My Zsh
-    ohMyZsh = {
-      enable = true;
-      plugins = [
-        "git"
-        "sudo"
-        "docker"
-        "kubectl"
-      ];
-      theme = "alanpeabody";
-    };
+    # Starship prompt (shared config from /etc/starship.toml)
+    promptInit = ''
+      eval "$(starship init zsh)"
+    '';
   };
 
   # Fish shell
@@ -78,7 +64,6 @@
 
     # Fish config
     shellInit = ''
-      set -g fish_greeting ""
       set -g fish_key_bindings fish_vi_key_bindings
     '';
   };

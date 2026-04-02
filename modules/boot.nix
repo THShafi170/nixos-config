@@ -16,7 +16,6 @@
       # Using systemd-boot as bootloader
       systemd-boot = {
         enable = true;
-        editor = true;
         consoleMode = "auto";
         edk2-uefi-shell.enable = true;
       };

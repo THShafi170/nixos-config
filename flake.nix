@@ -34,12 +34,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    bottles-deflatpak.url = "github:THShafi170/Bottles-Deflatpak";
+    bottles-deflatpak = {
+      url = "github:THShafi170/Bottles-Deflatpak";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixos-06cb-009a-fingerprint-sensor = {
       url = "github:iedame/nixos-06cb-009a-fingerprint-sensor/25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
@@ -48,12 +53,9 @@
     {
       self,
       nixpkgs,
-      home-manager,
-      nix-cachyos-kernel,
       vicinae,
       vicinae-extensions,
       aagl,
-      bottles-deflatpak,
       ...
     }@inputs:
     let
@@ -93,6 +95,7 @@
         modules = [
           ./hosts/default.nix
           aagl.nixosModules.default
+          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-yoga
           inputs.nixos-06cb-009a-fingerprint-sensor.nixosModules."06cb-009a-fingerprint-sensor"
           inputs.home-manager.nixosModules.home-manager
           inputs.nix-flatpak.nixosModules.nix-flatpak
@@ -118,7 +121,6 @@
               users.tenshou170 = import ./home/default.nix;
               extraSpecialArgs = {
                 inherit
-                  aagl
                   inputs
                   pkgsMaster
                   vicinae

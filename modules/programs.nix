@@ -20,7 +20,6 @@
     libsecret
     mtools
     ntfs3g
-    seatd
     libunity
     libayatana-appindicator
     libappindicator-gtk2
@@ -46,7 +45,7 @@
     heimdall
 
     # Communication
-    #(discord-ptb.override {
+    #(discord.override {
     #  withEquicord = true;
     #})
     osmium
@@ -61,7 +60,6 @@
     lutris
     mangohud
     protonplus
-    steam
     steamcmd
     steam-run
     umu-launcher
@@ -95,9 +93,7 @@
     varia
   ];
 
-  # Environment variables
   environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
     NIXPKGS_ALLOW_UNFREE = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     ELECTRON_ENABLE_HARDWARE_ACCELERATION = "1";
@@ -114,8 +110,6 @@
     ];
   };
 
-  # XDG configuration
-  xdg.portal.xdgOpenUsePortal = true;
 
   # Programs configuration
   programs = {
@@ -130,23 +124,21 @@
     # Steam configuration
     steam = {
       enable = true;
-      extraPackages =
-        with pkgs;
-        [
-          libXcursor
-          libXi
-          libXinerama
-          libXcomposite
-          libGL
-          vulkan-loader
-          libpulseaudio
-          alsa-lib
-          libkrb5
-          systemd
-          wayland
-          libxkbcommon
-        ]
-        ++ sharedFonts;
+      fontPackages = sharedFonts;
+      extraPackages = with pkgs; [
+        libXcursor
+        libXi
+        libXinerama
+        libXcomposite
+        libGL
+        vulkan-loader
+        libpulseaudio
+        alsa-lib
+        libkrb5
+        systemd
+        wayland
+        libxkbcommon
+      ];
       remotePlay.openFirewall = true;
       gamescopeSession.enable = true;
       protontricks.enable = true;

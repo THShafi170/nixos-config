@@ -55,4 +55,4 @@ sudo nixos-rebuild switch --flake .#X1-Yoga-2nd
 
 ---
 
-**Last Updated**: March 9, 2026
+**Last Updated**: April 2, 2026

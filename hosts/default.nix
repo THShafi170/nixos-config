@@ -27,7 +27,6 @@
       "bn_BD/UTF-8"
       "ja_JP.UTF-8/UTF-8"
       "ru_RU.UTF-8/UTF-8"
-      "ru_UA.UTF-8/UTF-8"
       "zh_CN.UTF-8/UTF-8"
       "zh_TW.UTF-8/UTF-8"
     ];
@@ -60,6 +59,13 @@
     fontconfig = {
       enable = true;
       useEmbeddedBitmaps = true;
+      defaultFonts = {
+        # Noto Sans covers Latin + Cyrillic (Russian) natively
+        sansSerif = [ "Noto Sans" "Noto Sans Bengali" "Noto Sans CJK SC" "Noto Sans CJK TC" "Noto Sans CJK JP" "Noto Sans CJK KR" ];
+        serif = [ "Noto Serif" "Noto Serif Bengali" "Noto Serif CJK SC" "Noto Serif CJK TC" "Noto Serif CJK JP" "Noto Serif CJK KR" ];
+        monospace = [ "JetBrains Mono" "Noto Sans Mono CJK SC" "Noto Sans Mono CJK JP" ];
+        emoji = [ "Noto Color Emoji" ];
+      };
     };
     enableDefaultPackages = true;
     packages = sharedFonts;
@@ -128,6 +134,11 @@
         "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
         "bottles-deflatpak.cachix.org-1:YT/o8RO4yysuReUamuL09Db+O7PA5FtsYqeRXSfbweE="
       ];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
     };
   };
 
