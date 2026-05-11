@@ -48,6 +48,9 @@
     # Kernel runtime parameters
     kernel.sysctl = {
       "vm.max_map_count" = 2147483642;
+      "fs.inotify.max_user_watches" = 1048576;
+      "fs.inotify.max_user_instances" = 1024;
+      "fs.inotify.max_queued_events" = 65536;
     };
 
     # Hibernation & Power Management
@@ -83,6 +86,10 @@
     plymouth = {
       enable = true;
       theme = "bgrt";
+      logo = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nixos-white.png";
+        sha256 = "d9b63ffe9a664f0b68be475a4488f6d2d29cc4e40facfd99db36e343ef455ad2";
+      };
     };
   };
 

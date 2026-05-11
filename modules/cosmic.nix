@@ -32,9 +32,8 @@
     cosmic-ext-applet-weather
     cosmic-ext-applet-privacy-indicator
 
-    (vivaldi.override {
-      proprietaryCodecs = true;
-      enableWidevine = true;
+    # Web browser (overrides specifically for COSMIC)
+    (brave.override {
       commandLineArgs = [
         "--password-store=gnome-libsecret"
         "--ozone-platform=wayland"

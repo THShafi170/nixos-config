@@ -7,13 +7,22 @@
 
 {
   environment.systemPackages = with pkgs; [
+    # Nix
+    nixd
+    nixfmt
+    nixfmt-tree
+
+    # Android
+    androidenv.androidPkgs.androidsdk
+    androidenv.androidPkgs.all.packages.ndk.v27_3_13750724
+    androidenv.androidPkgs.platform-tools
+
     # Rust
     # rustup is the sole toolchain manager. Fenix components must not be added
     # here — they shadow rustup's proxies in /run/current-system/sw/bin/.
     # rust-analyzer is also omitted: install via `rustup component add rust-analyzer`
     # so it stays in sync with the active toolchain.
     rustup
-    cargo-nextest
 
     # Python
     (python3.withPackages (
@@ -30,38 +39,63 @@
     ruff
     pyright
 
+    # C / C++
+    gcc
+    clang
+    clang-tools
+    gdb
+    cmake
+    ninja
+    gnumake
+    mold
+    ccache
+    pkg-config
+    openssl
+
+    # Java
+    jdk21
+    maven
+    gradle
+
+    # JavaScript / Node.js
+    nodejs_24
+    pnpm
+
     # Go
     go
     gopls
     delve
 
-    # Windows cross-compilation via MinGW
-    # Places x86_64-w64-mingw32-gcc and friends in /run/current-system/sw/bin/,
-    # which ~/.cargo/config.toml (managed by rust.nix) references directly.
+    # MinGW-w64
     pkgsCross.mingwW64.stdenv.cc
-    wine64
+    pkgsCross.mingw32.stdenv.cc
 
-    # Core development tools
-    jdk21
-    maven
-    gradle
-    gcc
-    ninja
-    ccache
-    cachix
-    clang # used as the mold linker driver for Linux targets
-    cmake
-    devenv
-    gnumake
-    gdb
+    # DotNET
     dotnet-sdk
     mono
-    mold
-    pkg-config
-    openssl
+    csharp-ls
+
+    # Zig
+    zig
+    zls
+
+    # General tools
+    binwalk
+    devenv
+    nh
+    nix-output-monitor
+    cachix
+    jq
+    tree
+    ripgrep
+    fd
+    fakeroot
+    libcap
+    sqlite
 
     # Editors
-    vscode-fhs
+    zed-editor-fhs
+    kiro-fhs
     antigravity-fhs
 
     # CLI tools
@@ -74,28 +108,12 @@
     libcap
     sqlite
     nix-search-tv
-
-    # Language servers and formatters
-    nixd
-    nixfmt
-    nixfmt-tree
-    clang-tools
-    typescript-language-server
-    vtsls
-    nodePackages.vscode-langservers-extracted
-    yaml-language-server
-    taplo
-    marksman
-
-    # JavaScript / Node.js
-    nodejs_24
-    pnpm
   ];
 
   programs = {
     java = {
       enable = true;
-      package = pkgs.jdk;
+      package = pkgs.jdk17;
     };
     direnv = {
       enable = true;
@@ -105,20 +123,23 @@
     };
   };
 
+  # Android SDK License
+  nixpkgs.config.android_sdk.accept_license = true;
+
   environment.sessionVariables = {
     # Rust
     RUST_BACKTRACE = "1";
     RUSTUP_HOME = "$HOME/.rustup";
     CARGO_HOME = "$HOME/.cargo";
-    CARGO_TARGET_DIR = "$HOME/.cache/cargo-target";
     PKG_CONFIG_ALLOW_CROSS = "1";
+    XWIN_CACHE_DIR = "$HOME/.cache/cargo-xwin";
 
     # .NET
     DOTNET_CLI_TELEMETRY_OPTOUT = "1";
     DOTNET_ROOT = "${pkgs.dotnet-sdk}";
 
     # Java
-    JAVA_HOME = "${pkgs.jdk}";
+    JAVA_HOME = "${pkgs.jdk17}";
 
     # C/C++
     CC = lib.getExe' pkgs.gcc "gcc";

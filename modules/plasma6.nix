@@ -31,23 +31,14 @@
       adw-gtk3
       bibata-cursors
       vlc
-      (
-        (vivaldi.override {
-          proprietaryCodecs = true;
-          enableWidevine = true;
-          commandLineArgs = [
-            "--password-store=kwallet6"
-            "--ozone-platform=wayland"
-            "--enable-wayland-ime"
-            "--wayland-text-input-version=3"
-          ];
-        }).overrideAttrs
-        (oldAttrs: {
-          dontWrapQtApps = false;
-          dontPatchELF = true;
-          nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ pkgs.kdePackages.wrapQtAppsHook ];
-        })
-      )
+      (brave.override {
+        commandLineArgs = [
+          "--password-store=kwallet6"
+          "--ozone-platform=wayland"
+          "--enable-wayland-ime"
+          "--wayland-text-input-version=3"
+        ];
+      })
       (google-chrome.override {
         commandLineArgs = [
           "--password-store=kwallet6"
@@ -88,8 +79,16 @@
   };
 
   # Environment variables
-  environment.sessionVariables = {
-    GTK_USE_PORTAL = "1";
+  environment = {
+    sessionVariables = {
+      GTK_USE_PORTAL = "1";
+      XDG_DATA_DIRS = [
+        "${pkgs.appmenu-gtk3-module}/share/gsettings-schemas/appmenu-gtk3-module-0.7.6"
+      ];
+    };
+    variables = {
+      UBUNTU_MENUPROXY = "1";
+    };
   };
 
   # Integration

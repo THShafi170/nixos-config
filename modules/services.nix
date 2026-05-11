@@ -39,7 +39,11 @@
           isAllowed = true;
           isSystem = false;
         };
-        vivaldi = {
+        brave = {
+          isAllowed = true;
+          isSystem = false;
+        };
+        google-chrome = {
           isAllowed = true;
           isSystem = false;
         };

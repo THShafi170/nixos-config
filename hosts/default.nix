@@ -50,6 +50,9 @@
     keyMap = "us";
   };
 
+  # Real-time
+  security.rtkit.enable = true;
+
   # System font configuration
   fonts = {
     fontDir = {
@@ -61,9 +64,27 @@
       useEmbeddedBitmaps = true;
       defaultFonts = {
         # Noto Sans covers Latin + Cyrillic (Russian) natively
-        sansSerif = [ "Noto Sans" "Noto Sans Bengali" "Noto Sans CJK SC" "Noto Sans CJK TC" "Noto Sans CJK JP" "Noto Sans CJK KR" ];
-        serif = [ "Noto Serif" "Noto Serif Bengali" "Noto Serif CJK SC" "Noto Serif CJK TC" "Noto Serif CJK JP" "Noto Serif CJK KR" ];
-        monospace = [ "JetBrains Mono" "Noto Sans Mono CJK SC" "Noto Sans Mono CJK JP" ];
+        sansSerif = [
+          "Noto Sans"
+          "Noto Sans Bengali"
+          "Noto Sans CJK SC"
+          "Noto Sans CJK TC"
+          "Noto Sans CJK JP"
+          "Noto Sans CJK KR"
+        ];
+        serif = [
+          "Noto Serif"
+          "Noto Serif Bengali"
+          "Noto Serif CJK SC"
+          "Noto Serif CJK TC"
+          "Noto Serif CJK JP"
+          "Noto Serif CJK KR"
+        ];
+        monospace = [
+          "JetBrains Mono"
+          "Noto Sans Mono CJK SC"
+          "Noto Sans Mono CJK JP"
+        ];
         emoji = [ "Noto Color Emoji" ];
       };
     };
@@ -86,7 +107,17 @@
   # System limits and optimization
   systemd = {
     user.extraConfig = "DefaultLimitNOFILE=1048576";
-    services.nix-daemon.environment.TMPDIR = "/var/tmp";
+    services = {
+      nix-daemon.environment.TMPDIR = "/var/tmp";
+      rtkit-daemon = {
+        serviceConfig = {
+          ExecStart = [
+            ""
+            "${pkgs.rtkit}/libexec/rtkit-daemon --no-canary"
+          ];
+        };
+      };
+    };
   };
 
   # Nix configuration

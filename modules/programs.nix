@@ -9,7 +9,6 @@
   # System packages
   environment.systemPackages = with pkgs; [
     # System utilities
-    binwalk
     btop
     btrfs-progs
     colord
@@ -24,6 +23,7 @@
     libayatana-appindicator
     libappindicator-gtk2
     libappindicator-gtk3
+    python3Packages.pyclip
     wl-clipboard
 
     # Media & Graphics
@@ -34,28 +34,25 @@
     icoutils
     imagemagick
     krita
+    pear-desktop
     switcheroo
     webp-pixbuf-loader
     wpgtk
     xournalpp
-    mangayomi
-
-    # Android tools
-    android-tools
-    heimdall
 
     # Communication
-    #(discord.override {
-    #  withEquicord = true;
-    #})
+    (discord.override {
+      withEquicord = true;
+    })
     osmium
-    equibop
-    arrpc
+    # equibop
+    # arrpc-bun
     zapzap
     zulip
 
     # Gaming & Wine
     inputs.bottles-deflatpak.packages.${pkgs.stdenv.hostPlatform.system}.bottles-deflatpak-unwrapped
+    faugus-launcher
     heroic
     lutris
     mangohud
@@ -71,14 +68,16 @@
 
     # Emulations
     dosbox-x
-    (_86box-with-roms.override {
+    (_86box.override {
+      enableDynarec = true;
+      enableWayland = true;
       unfreeEnableDiscord = true;
       unfreeEnableRoms = true;
     })
 
     # Other programs
     gnome-boxes
-    proton-authenticator
+    ente-auth
 
     # Productivity
     onlyoffice-desktopeditors
@@ -93,6 +92,17 @@
     varia
   ];
 
+  # Brave policies
+  environment.etc."brave/policies/managed/config.json".text = builtins.toJSON {
+    BraveRewardsDisabled = 1;
+    BraveWalletDisabled = 1;
+    BraveVPNDisabled = 1;
+    BraveAIChatEnabled = 0;
+    BraveP3AEnabled = 0;
+    BraveTalkDisabled = 1;
+  };
+
+  # Session variables
   environment.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
@@ -109,7 +119,6 @@
       }
     ];
   };
-
 
   # Programs configuration
   programs = {

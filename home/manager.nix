@@ -33,8 +33,8 @@
       lfs.enable = true;
       settings = {
         user = {
-          name = "Tawsif Hossain Shafi";
-          email = "thshafi170@gmail.com";
+          name = "Tenshou Zmeyev";
+          email = "tenshou170@gmail.com";
         };
         core.editor = "nano";
       };
@@ -66,7 +66,6 @@
       power-profile
       process-manager
       ssh
-      vscode-recents
     ];
   };
 }

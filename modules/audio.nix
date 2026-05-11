@@ -4,17 +4,6 @@
 }:
 
 {
-  # Real-time
-  security.rtkit.enable = true;
-  systemd.services.rtkit-daemon = {
-    serviceConfig = {
-      ExecStart = [
-        ""
-        "${pkgs.rtkit}/libexec/rtkit-daemon --no-canary"
-      ];
-    };
-  };
-
   # PipeWire
   services.pipewire = {
     enable = true;
