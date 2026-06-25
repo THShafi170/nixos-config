@@ -6,12 +6,12 @@
 }:
 
 let
-  version = "1.3.6";
+  version = "1.4.0";
 
   srcs = {
     x86_64-linux = fetchurl {
       url = "https://github.com/Creationsss/arrpc-bun/releases/download/v${version}/arrpc-bun-linux-x64";
-      hash = "sha256-Q4sCHJJRxHhDwW1LwRhizQx5JB1pM1OiF+tI8HEaqRU=";
+      hash = "sha256-3BvYJkIL3/7GKyTfYuzkiXQBdu25l27RZOqFVSTXcbM=";
     };
   };
 in

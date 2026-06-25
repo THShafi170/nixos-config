@@ -43,13 +43,6 @@
     };
   };
 
-  # Console configuration
-  console = {
-    packages = [ pkgs.terminus_font ];
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-124n.psf.gz";
-    keyMap = "us";
-  };
-
   # Real-time
   security.rtkit.enable = true;
 
@@ -81,7 +74,7 @@
           "Noto Serif CJK KR"
         ];
         monospace = [
-          "JetBrains Mono"
+          "JetBrainsMono Nerd Font Mono"
           "Noto Sans Mono CJK SC"
           "Noto Sans Mono CJK JP"
         ];
@@ -92,21 +85,39 @@
     packages = sharedFonts;
   };
 
-  # ZRAM configuration
-  services.zram-generator = {
-    enable = true;
-    settings = {
-      zram0 = {
-        zram-size = "ram";
-        compression-algorithm = "zstd";
-        swap-priority = 100;
+  # System services
+  services = {
+    # KMSCON
+    kmscon = {
+      enable = true;
+      config = {
+        libseat = true;
+        hwaccel = false;
+        font-name = "JetBrainsMono Nerd Font Mono ";
+        font-size = 14;
+        term = "xterm-256color";
+        sb-size = 10000;
+      };
+    };
+
+    # ZRAM
+    zram-generator = {
+      enable = true;
+      settings = {
+        zram0 = {
+          zram-size = "ram";
+          compression-algorithm = "zstd";
+          swap-priority = 100;
+        };
       };
     };
   };
 
   # System limits and optimization
   systemd = {
-    user.extraConfig = "DefaultLimitNOFILE=1048576";
+    user.settings.Manager = {
+      DefaultLimitNOFILE = 1048576;
+    };
     services = {
       nix-daemon.environment.TMPDIR = "/var/tmp";
       rtkit-daemon = {
@@ -152,15 +163,15 @@
       ];
       # Binary caches
       substituters = [
-        "https://attic.xuyh0120.win/lantian"
         "https://nix-community.cachix.org"
+        "https://nyx-cache.chaotic.cx"
         "https://vicinae.cachix.org"
         "https://ezkea.cachix.org"
         "https://bottles-deflatpak.cachix.org"
       ];
       trusted-public-keys = [
-        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
         "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
         "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
         "bottles-deflatpak.cachix.org-1:YT/o8RO4yysuReUamuL09Db+O7PA5FtsYqeRXSfbweE="
@@ -174,5 +185,5 @@
   };
 
   # State Version
-  system.stateVersion = "26.05";
+  system.stateVersion = "26.11";
 }

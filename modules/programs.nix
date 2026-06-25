@@ -19,12 +19,14 @@
     libsecret
     mtools
     ntfs3g
+    appmenu-gtk3-module
     libunity
     libayatana-appindicator
     libappindicator-gtk2
     libappindicator-gtk3
     python3Packages.pyclip
     wl-clipboard
+    oh-my-posh
 
     # Media & Graphics
     pavucontrol
@@ -37,7 +39,6 @@
     pear-desktop
     switcheroo
     webp-pixbuf-loader
-    wpgtk
     xournalpp
 
     # Communication
@@ -48,7 +49,6 @@
     # equibop
     # arrpc-bun
     zapzap
-    zulip
 
     # Gaming & Wine
     inputs.bottles-deflatpak.packages.${pkgs.stdenv.hostPlatform.system}.bottles-deflatpak-unwrapped
@@ -123,7 +123,6 @@
   # Programs configuration
   programs = {
     # Basic programs
-    command-not-found.enable = true;
     chromium.enable = true;
     dconf.enable = true;
     appimage.enable = true;

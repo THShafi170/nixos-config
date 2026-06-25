@@ -5,11 +5,6 @@
 }:
 
 {
-  # Overlay for nix-cachyos-kernel
-  nixpkgs.overlays = [
-    inputs.nix-cachyos-kernel.overlays.default
-  ];
-
   # Boot configuration
   boot = {
     loader = {
@@ -23,7 +18,7 @@
     };
 
     # Kernel configuration
-    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+    kernelPackages = pkgs.linuxPackages_cachyos;
 
     # Essential kernel modules loaded at boot
     kernelModules = [

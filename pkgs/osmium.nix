@@ -56,11 +56,11 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "osmium";
-  version = "0.0.26-alpha";
+  version = "0.0.30-alpha";
 
   src = fetchurl {
-    url = "https://updater.osmium.chat/Osmium-0.0.26-alpha-x64.tar.gz";
-    hash = "sha256-6hsXZ9ykM7x4RNqixolK3/C9K0OBjMuUNIWYjjj8uCs=";
+    url = "https://updater.osmium.chat/Osmium-0.0.30-alpha-x64.tar.gz";
+    hash = "sha256-NF7RF8odDQfh4zhk5B4md4OqDgh538exFNsRZzSJwBM=";
   };
 
   nativeBuildInputs = [

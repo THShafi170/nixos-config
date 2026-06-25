@@ -36,6 +36,21 @@
     zenity
   ];
 
+  # Nano configuration
+  programs.nano = {
+    enable = true;
+    package = pkgs.nano;
+    syntaxHighlight = true;
+    nanorc = ''
+      set autoindent
+      set tabstospaces
+      set linenumbers
+      set minibar
+      set indicator
+      set mouse
+    '';
+  };
+
   # Zsh configuration
   programs.zsh = {
     enable = true;
@@ -46,11 +61,6 @@
     # History settings
     histSize = 10000;
     histFile = "$HOME/.zsh_history";
-
-    # Starship prompt (shared config from /etc/starship.toml)
-    promptInit = ''
-      eval "$(starship init zsh)"
-    '';
   };
 
   # Fish shell

@@ -10,7 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     fenix = {
       url = "github:nix-community/fenix";
@@ -35,7 +35,7 @@
     };
 
     bottles-deflatpak = {
-      url = "github:THShafi170/Bottles-Deflatpak";
+      url = "github:Tenshou170/Bottles-Deflatpak";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -53,6 +53,7 @@
     {
       self,
       nixpkgs,
+      chaotic,
       vicinae,
       vicinae-extensions,
       aagl,
@@ -94,10 +95,12 @@
 
         modules = [
           ./hosts/default.nix
-          aagl.nixosModules.default
+          inputs.aagl.nixosModules.default
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-yoga
           inputs.nixos-06cb-009a-fingerprint-sensor.nixosModules."06cb-009a-fingerprint-sensor"
           inputs.home-manager.nixosModules.home-manager
+          inputs.chaotic.nixosModules.default
+          inputs.vicinae.nixosModules.default
           inputs.nix-flatpak.nixosModules.nix-flatpak
 
           {
